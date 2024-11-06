@@ -10,10 +10,10 @@ export const Todo_List_Fetch = () => {
     // Recogemos todos los datos de la API
     const get_Datos = async () => {
         try {
-            const respuesta = await fetch('https://playground.4geeks.com/todo/users');
+            const respuesta = await fetch('https://playground.4geeks.com/todo/users/llorens');
             const datos = await respuesta.json();
-            console.log(datos.users);
-            setTareas(datos.users);
+            console.log(datos.todos);
+            setTareas(datos.todos);
             console.log(tareas);
         } catch (error) {
             console.log('Error al cargar los datos');
@@ -23,11 +23,16 @@ export const Todo_List_Fetch = () => {
     // Insertamos datos en la API
     const insert_Datos = async (nombre) => {
         try {
-            const respuesta = await fetch('https://playground.4geeks.com/todo/users/' + nombre, {
+            const payload = {
+                label: nombre,
+                is_done: "false"
+            }
+            const respuesta = await fetch('https://playground.4geeks.com/todo/todos/llorens', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                body: JSON.stringify(payload)
             });
             if (respuesta.ok) {
                 get_Datos(); // Actualizamos la lista después de insertar
@@ -38,9 +43,9 @@ export const Todo_List_Fetch = () => {
     };
 
     // Borrar datos en la API
-    const borrar_Datos = async (nombre) => {
+    const borrar_Datos = async (id) => {
         try {
-            const respuesta = await fetch('https://playground.4geeks.com/todo/users/' + nombre, {
+            const respuesta = await fetch('https://playground.4geeks.com/todo/todos/' + id, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -103,11 +108,11 @@ export const Todo_List_Fetch = () => {
                                 onMouseEnter={(e) => (e.currentTarget.querySelector('.delete-btn').style.display = 'inline')}
                                 onMouseLeave={(e) => (e.currentTarget.querySelector('.delete-btn').style.display = 'none')}
                             >
-                                {tarea.name}
+                                {tarea.label}
                                 <button
                                     className="btn btn-sm btn-danger delete-btn"
                                     style={{ display: 'none' }}
-                                    onClick={() => handleEliminar(tarea.name)}
+                                    onClick={() => handleEliminar(tarea.id)}
                                 >
                                     ×
                                 </button>
