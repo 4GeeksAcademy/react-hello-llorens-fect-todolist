@@ -6,10 +6,27 @@ export const Todo_List_Fetch = () => {
         tarea: '',
         done: false
     });
+    
+
+    const crear_Usuario = async () => {
+        try {
+            const respuesta = await fetch('https://playground.4geeks.com/todo/users/llorens', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+        } catch (error) {
+            console.log('Error al insertar los datos');
+        }
+    };
+
 
     // Recogemos todos los datos de la API
     const get_Datos = async () => {
         try {
+            crear_Usuario();
             const respuesta = await fetch('https://playground.4geeks.com/todo/users/llorens');
             const datos = await respuesta.json();
             console.log(datos.todos);
